@@ -26,10 +26,10 @@ export class JsonFirst implements INodeType {
         type: 'options',
         noDataExpression: true,
         options: [
-          { name: 'Process Intent', value: 'processIntent', description: 'Convert text → JDON', action: 'Process an intent' },
-          { name: 'Execute Intent', value: 'executeIntent', description: 'Process + execute end-to-end', action: 'Execute an intent' },
-          { name: 'Validate JDON', value: 'validateJdon', description: 'Validate a JDON object', action: 'Validate a jdon' },
-          { name: 'Get Governance Modes', value: 'getModes', description: 'List available modes', action: 'Get governance modes' },
+          { name: 'Process Intent', value: 'processIntent', description: 'Convert text → JDON intent object', action: 'Process an intent' },
+          { name: 'Request Execution', value: 'requestExecution', description: 'Flag a JDON intent as ready for execution', action: 'Request execution' },
+          { name: 'Verify Execution', value: 'verifyExecution', description: 'Submit execution proof for a JDON intent', action: 'Verify execution' },
+          { name: 'Get Governance Modes', value: 'getModes', description: 'List available governance modes', action: 'Get governance modes' },
         ],
         default: 'processIntent',
       },
@@ -55,15 +55,46 @@ export class JsonFirst implements INodeType {
           { name: 'GUARDIAN_MODE', value: 'GUARDIAN_MODE' },
         ],
         default: 'ANTI_CREDIT_WASTE_V2',
-        displayOptions: { show: { operation: ['processIntent', 'executeIntent'] } },
+        displayOptions: { show: { operation: ['processIntent'] } },
       },
       {
-        displayName: 'JDON Object',
-        name: 'jdonObject',
-        type: 'json',
-        default: '{}',
+        displayName: 'History ID',
+        name: 'historyId',
+        type: 'string',
+        default: '',
         required: true,
-        displayOptions: { show: { operation: ['validateJdon'] } },
+        description: 'The history_id returned by the Process Intent operation',
+        displayOptions: { show: { operation: ['requestExecution', 'verifyExecution'] } },
+      },
+      {
+        displayName: 'Executor',
+        name: 'executor',
+        type: 'string',
+        default: 'n8n-workflow',
+        description: 'Identifier of the system that executed the intent',
+        displayOptions: { show: { operation: ['verifyExecution'] } },
+      },
+      {
+        displayName: 'Execution Result',
+        name: 'result',
+        type: 'options',
+        options: [
+          { name: 'Success', value: 'SUCCESS' },
+          { name: 'Partial', value: 'PARTIAL' },
+          { name: 'Failed', value: 'FAILED' },
+        ],
+        default: 'SUCCESS',
+        displayOptions: { show: { operation: ['verifyExecution'] } },
+      },
+      {
+        displayName: 'Verification Proof',
+        name: 'verificationProof',
+        type: 'string',
+        typeOptions: { rows: 2 },
+        default: '',
+        required: true,
+        description: 'Evidence that the intent was executed (e.g. response body, transaction ID)',
+        displayOptions: { show: { operation: ['verifyExecution'] } },
       },
     ],
   };
@@ -89,24 +120,27 @@ export class JsonFirst implements INodeType {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
           }) as object;
-        } else if (operation === 'executeIntent') {
-          const body = {
-            text: this.getNodeParameter('inputText', i) as string,
-            mode: this.getNodeParameter('mode', i) as string,
-          };
+        } else if (operation === 'requestExecution') {
+          const body = { history_id: this.getNodeParameter('historyId', i) as string };
           responseData = await this.helpers.httpRequestWithAuthentication('jsonFirstApi', {
             method: 'POST',
             url: `${baseUrl}/api/jsonfirst/execute`,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
           }) as object;
-        } else if (operation === 'validateJdon') {
-          const jdon = this.getNodeParameter('jdonObject', i);
+        } else if (operation === 'verifyExecution') {
+          const body = {
+            history_id: this.getNodeParameter('historyId', i) as string,
+            executor: this.getNodeParameter('executor', i) as string,
+            result: this.getNodeParameter('result', i) as string,
+            verification_method: 'n8n_workflow',
+            verification_proof: this.getNodeParameter('verificationProof', i) as string,
+          };
           responseData = await this.helpers.httpRequestWithAuthentication('jsonFirstApi', {
             method: 'POST',
             url: `${baseUrl}/api/jsonfirst/verify`,
             headers: { 'Content-Type': 'application/json' },
-            body: typeof jdon === 'string' ? jdon : JSON.stringify(jdon),
+            body: JSON.stringify(body),
           }) as object;
         } else {
           responseData = await this.helpers.httpRequestWithAuthentication('jsonFirstApi', {

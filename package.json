@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-jsonfirst",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "JSONFIRST community node for n8n — Convert natural language to structured JDON intents with AI governance",
   "keywords": [
     "n8n-community-node-package",
