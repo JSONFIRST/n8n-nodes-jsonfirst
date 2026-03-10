@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-jsonfirst",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JSONFIRST community node for n8n — Convert natural language to structured JDON intents with AI governance",
   "keywords": [
     "n8n-community-node-package",
@@ -17,7 +17,7 @@
     "gemini"
   ],
   "license": "MIT",
-  "author": "JSONFIRST <contact@jsonfirst.com>",
+  "author": "JSONFIRST <support@jsonfirst.com>",
   "homepage": "https://jsonfirst.com",
   "repository": {
     "type": "git",
