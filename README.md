@@ -102,7 +102,7 @@ You can then use n8n's **Switch** or **IF** node to route based on `action.norma
 - [Documentation](https://jsonfirst.com/docs)
 - [npm](https://www.npmjs.com/package/n8n-nodes-jsonfirst)
 - [GitHub](https://github.com/jsonfirst/n8n-nodes-jsonfirst)
-- [Contact](mailto:contact@jsonfirst.com)
+- [Contact](mailto:support@jsonfirst.com)
 
 ---
 
