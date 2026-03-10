@@ -1,0 +1,49 @@
+{
+  "name": "n8n-nodes-jsonfirst",
+  "version": "1.0.0",
+  "description": "JSONFIRST community node for n8n — Convert natural language to structured JDON intents with AI governance",
+  "keywords": [
+    "n8n-community-node-package",
+    "jsonfirst",
+    "jdon",
+    "ai",
+    "governance",
+    "intent",
+    "llm",
+    "no-code",
+    "automation",
+    "chatgpt",
+    "claude",
+    "gemini"
+  ],
+  "license": "MIT",
+  "author": "JSONFIRST <contact@jsonfirst.com>",
+  "homepage": "https://jsonfirst.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsonfirst/n8n-nodes-jsonfirst"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step required (pure JS)'"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/JsonFirstApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/JsonFirst/JsonFirst.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "*"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
