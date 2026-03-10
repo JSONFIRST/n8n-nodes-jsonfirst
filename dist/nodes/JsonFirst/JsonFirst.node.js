@@ -208,12 +208,11 @@ class JsonFirst {
           };
           if (options.tool) body.tool = options.tool;
 
-          const response = await this.helpers.httpRequest({
+          const response = await this.helpers.httpRequestWithAuthentication("jsonFirstApi", {
             method: "POST",
             url: `${baseUrl}/api/jsonfirst`,
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${credentials.apiKey}`,
             },
             body: JSON.stringify(body),
           });
@@ -228,12 +227,11 @@ class JsonFirst {
           const body = { text: inputText, mode: mode };
           if (options.tool) body.tool = options.tool;
 
-          const response = await this.helpers.httpRequest({
+          const response = await this.helpers.httpRequestWithAuthentication("jsonFirstApi", {
             method: "POST",
             url: `${baseUrl}/api/jsonfirst/execute`,
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${credentials.apiKey}`,
             },
             body: JSON.stringify(body),
           });
@@ -248,12 +246,11 @@ class JsonFirst {
               ? JSON.parse(jdonObject)
               : jdonObject;
 
-          const response = await this.helpers.httpRequest({
+          const response = await this.helpers.httpRequestWithAuthentication("jsonFirstApi", {
             method: "POST",
             url: `${baseUrl}/api/jsonfirst/verify`,
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${credentials.apiKey}`,
             },
             body: JSON.stringify(body),
           });
@@ -261,12 +258,9 @@ class JsonFirst {
           responseData =
             typeof response === "string" ? JSON.parse(response) : response;
         } else if (operation === "getModes") {
-          const response = await this.helpers.httpRequest({
+          const response = await this.helpers.httpRequestWithAuthentication("jsonFirstApi", {
             method: "GET",
             url: `${baseUrl}/api/jsonfirst/modes`,
-            headers: {
-              Authorization: `Bearer ${credentials.apiKey}`,
-            },
           });
 
           responseData =
