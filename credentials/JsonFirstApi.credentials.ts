@@ -1,4 +1,4 @@
-import { ICredentialType, INodeProperties, IAuthenticateGeneric } from 'n8n-workflow';
+import { ICredentialType, INodeProperties, IAuthenticateGeneric, ICredentialTestRequest } from 'n8n-workflow';
 
 export class JsonFirstApi implements ICredentialType {
   name = 'jsonFirstApi';
@@ -28,6 +28,12 @@ export class JsonFirstApi implements ICredentialType {
       headers: {
         Authorization: '=Bearer {{$credentials.apiKey}}',
       },
+    },
+  };
+  test: ICredentialTestRequest = {
+    request: {
+      baseURL: '={{$credentials.apiUrl}}',
+      url: '/api/models',
     },
   };
 }
