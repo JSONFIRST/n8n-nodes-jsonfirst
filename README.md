@@ -6,6 +6,14 @@ Convert natural language into structured **JDON intents** with AI governance, di
 
 ---
 
+## Who should try JSONFIRST?
+
+- **AI agent developers** — add a structured intent layer to your LLM pipeline
+- **n8n automation builders** — parse natural language into routable workflow actions
+- **People struggling with fragile prompt parsing** — replace brittle regex/if-else with governed JSON intents
+
+---
+
 ## What is JSONFIRST?
 
 [JSONFIRST](https://jsonfirst.com) is a universal intent protocol that transforms human text into machine-executable JSON (called **JDON**). It adds a governance layer to every AI interaction: modes like `ANTI_CREDIT_WASTE_V2` or `STRICT_PROTOCOL` control how the LLM behaves.
@@ -55,6 +63,38 @@ In your **self-hosted n8n** instance:
 | `STRICT_PROTOCOL` | Enforces strict JSONFIRST compliance |
 | `EXPRESS_ROUTE` | Fastest possible processing |
 | `GUARDIAN_MODE` | Enhanced safety and content filtering |
+
+---
+
+## Quick Test (5 lines)
+
+Install the node in n8n, then use this workflow:
+
+```
+Trigger: Manual
+↓
+JSONFIRST (Process Intent)
+  Input text: "Create an order for John, 2 units of product A"
+  Mode: ANTI_CREDIT_WASTE_V2
+↓
+Set node: use {{ $json.jdons[0].action.normalized }} to route
+```
+
+Expected output:
+```json
+{ "action": { "normalized": "create" }, "object": { "type": "order" }, "confidence": 0.94 }
+```
+
+---
+
+## Early Testers
+
+> **Looking for the first 20 developers testing n8n-nodes-jsonfirst.**
+> Open an issue using the [Early Tester template](https://github.com/jsonfirst/n8n-nodes-jsonfirst/issues/new?template=first-user.md) and your project will be listed here.
+
+| # | Project | Use case |
+|---|---|---|
+| — | *Be the first* | [Open an issue](https://github.com/jsonfirst/n8n-nodes-jsonfirst/issues/new?template=first-user.md) |
 
 ---
 
