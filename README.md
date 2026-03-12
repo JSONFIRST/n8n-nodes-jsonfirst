@@ -1,8 +1,29 @@
 # n8n-nodes-jsonfirst
 
-Official **JSONFIRST** community node for [n8n](https://n8n.io) — the workflow automation platform.
+**Turn natural language into structured, executable JSON intent for AI agents.**
 
-Convert natural language into structured **JDON intents** with AI governance, directly inside your n8n workflows.
+Stop writing brittle prompts. JSONFIRST converts user input into validated JSON your n8n workflows can execute reliably.
+
+---
+
+## Quick Test (5 lines)
+
+Install the node, then run this workflow:
+
+```
+Trigger: Manual
+↓
+JSONFIRST (Process Intent)
+  Input text: "Create an order for John, 2 units of product A"
+  Mode: ANTI_CREDIT_WASTE_V2
+↓
+Switch on {{ $json.jdons[0].action.normalized }} → route to sub-workflows
+```
+
+Expected output:
+```json
+{ "action": { "normalized": "create" }, "object": { "type": "order" }, "confidence": 0.94 }
+```
 
 ---
 
@@ -10,7 +31,7 @@ Convert natural language into structured **JDON intents** with AI governance, di
 
 - **AI agent developers** — add a structured intent layer to your LLM pipeline
 - **n8n automation builders** — parse natural language into routable workflow actions
-- **People struggling with fragile prompt parsing** — replace brittle regex/if-else with governed JSON intents
+- **Developers struggling with fragile prompt parsing** — replace brittle regex/if-else with governed JSON intents
 
 ---
 
@@ -19,7 +40,7 @@ Convert natural language into structured **JDON intents** with AI governance, di
 [JSONFIRST](https://jsonfirst.com) is a universal intent protocol that transforms human text into machine-executable JSON (called **JDON**). It adds a governance layer to every AI interaction: modes like `ANTI_CREDIT_WASTE_V2` or `STRICT_PROTOCOL` control how the LLM behaves.
 
 **Use cases in n8n:**
-- Parse user messages from Slack/Telegram → structured intent → route to the right sub-workflow
+- Parse Slack/Telegram messages → structured intent → route to the right sub-workflow
 - Build AI-governed automation pipelines with audit trails
 - Validate LLM outputs against a JSONFIRST contract before executing actions
 - Power no-code AI agents that follow strict operational modes
@@ -39,9 +60,9 @@ In your **self-hosted n8n** instance:
 
 ## Configuration
 
-1. Add a **JSONFIRST API** credential:
-   - **API Key** — get yours at [jsonfirst.com](https://jsonfirst.com) → Dashboard → API Console
-   - **API Base URL** — defaults to `https://jsonfirst.com`
+Add a **JSONFIRST API** credential:
+- **API Key** — get yours at [jsonfirst.com](https://jsonfirst.com) → Dashboard → API Console
+- **API Base URL** — defaults to `https://jsonfirst.com`
 
 ---
 
@@ -66,45 +87,13 @@ In your **self-hosted n8n** instance:
 
 ---
 
-## Quick Test (5 lines)
-
-Install the node in n8n, then use this workflow:
-
-```
-Trigger: Manual
-↓
-JSONFIRST (Process Intent)
-  Input text: "Create an order for John, 2 units of product A"
-  Mode: ANTI_CREDIT_WASTE_V2
-↓
-Set node: use {{ $json.jdons[0].action.normalized }} to route
-```
-
-Expected output:
-```json
-{ "action": { "normalized": "create" }, "object": { "type": "order" }, "confidence": 0.94 }
-```
-
----
-
-## Early Testers
-
-> **Looking for the first 20 developers testing n8n-nodes-jsonfirst.**
-> Open an issue using the [Early Tester template](https://github.com/jsonfirst/n8n-nodes-jsonfirst/issues/new?template=first-user.md) and your project will be listed here.
-
-| # | Project | Use case |
-|---|---|---|
-| — | *Be the first* | [Open an issue](https://github.com/jsonfirst/n8n-nodes-jsonfirst/issues/new?template=first-user.md) |
-
----
-
 ## Example Workflow
 
 ```
 [Webhook] → [JSONFIRST: Process Intent] → [Switch on action.normalized] → [HTTP Request / Email / Database]
 ```
 
-The JSONFIRST node takes raw text from a webhook and returns a structured JDON like:
+The JSONFIRST node takes raw text from a webhook and returns a structured JDON:
 
 ```json
 {
@@ -120,7 +109,18 @@ The JSONFIRST node takes raw text from a webhook and returns a structured JDON l
 }
 ```
 
-You can then use n8n's **Switch** or **IF** node to route based on `action.normalized`.
+Use n8n's **Switch** or **IF** node to route based on `action.normalized`.
+
+---
+
+## Early Testers
+
+> **Looking for the first 20 developers testing n8n-nodes-jsonfirst.**
+> Open an issue using the [Early Tester template](https://github.com/JSONFIRST/n8n-nodes-jsonfirst/issues/new?template=first-user.md) and your project will be listed here.
+
+| # | Project | Use case |
+|---|---|---|
+| — | *Be the first* | [Open an issue](https://github.com/JSONFIRST/n8n-nodes-jsonfirst/issues/new?template=first-user.md) |
 
 ---
 
@@ -141,7 +141,7 @@ You can then use n8n's **Switch** or **IF** node to route based on `action.norma
 
 - [Documentation](https://jsonfirst.com/docs)
 - [npm](https://www.npmjs.com/package/n8n-nodes-jsonfirst)
-- [GitHub](https://github.com/jsonfirst/n8n-nodes-jsonfirst)
+- [GitHub](https://github.com/JSONFIRST/n8n-nodes-jsonfirst)
 - [Contact](mailto:support@jsonfirst.com)
 
 ---
