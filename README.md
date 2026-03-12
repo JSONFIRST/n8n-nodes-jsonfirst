@@ -1,10 +1,15 @@
 # n8n-nodes-jsonfirst
 
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-jsonfirst.svg)](https://www.npmjs.com/package/n8n-nodes-jsonfirst)
+[![npm downloads](https://img.shields.io/npm/dm/n8n-nodes-jsonfirst.svg)](https://www.npmjs.com/package/n8n-nodes-jsonfirst)
+
 Stop writing fragile prompts for AI agents.
 
 JSONFIRST converts natural language into structured JSON intent your agents can execute safely.
 
 **Intent → JSON → Execution.**
+
+JSONFIRST helps build reliable AI agents by converting natural language into structured JSON intent.
 
 ```
 User input
