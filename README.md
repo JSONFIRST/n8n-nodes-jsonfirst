@@ -1,49 +1,52 @@
 # n8n-nodes-jsonfirst
 
-**Turn natural language into structured, executable JSON intent for AI agents.**
+Stop writing fragile prompts for AI agents.
 
-Stop writing brittle prompts. JSONFIRST converts user input into validated JSON your n8n workflows can execute reliably.
+JSONFIRST converts natural language into structured JSON intent your agents can execute safely.
+
+**Intent → JSON → Execution.**
+
+```
+User input
+    ↓
+JSONFIRST parsing
+    ↓
+JDON (structured intent)
+    ↓
+Agent execution
+```
 
 ---
 
-## Quick Test (5 lines)
-
-Install the node, then run this workflow:
+## Quick Example
 
 ```
-Trigger: Manual
-↓
-JSONFIRST (Process Intent)
-  Input text: "Create an order for John, 2 units of product A"
-  Mode: ANTI_CREDIT_WASTE_V2
-↓
-Switch on {{ $json.jdons[0].action.normalized }} → route to sub-workflows
+[Webhook] → [JSONFIRST: Process Intent] → [Switch on action.normalized] → [HTTP Request / Email / DB]
 ```
 
-Expected output:
+Input:
+```
+"Create an order for John, 2 units of product A"
+```
+
+Output:
 ```json
-{ "action": { "normalized": "create" }, "object": { "type": "order" }, "confidence": 0.94 }
+{
+  "action": { "normalized": "create" },
+  "object": { "type": "order" },
+  "confidence": 0.94
+}
 ```
 
+Route your workflow on `{{ $json.jdons[0].action.normalized }}`.
+
 ---
 
-## Who should try JSONFIRST?
+## Who is this for
 
-- **AI agent developers** — add a structured intent layer to your LLM pipeline
 - **n8n automation builders** — parse natural language into routable workflow actions
-- **Developers struggling with fragile prompt parsing** — replace brittle regex/if-else with governed JSON intents
-
----
-
-## What is JSONFIRST?
-
-[JSONFIRST](https://jsonfirst.com) is a universal intent protocol that transforms human text into machine-executable JSON (called **JDON**). It adds a governance layer to every AI interaction: modes like `ANTI_CREDIT_WASTE_V2` or `STRICT_PROTOCOL` control how the LLM behaves.
-
-**Use cases in n8n:**
-- Parse Slack/Telegram messages → structured intent → route to the right sub-workflow
-- Build AI-governed automation pipelines with audit trails
-- Validate LLM outputs against a JSONFIRST contract before executing actions
-- Power no-code AI agents that follow strict operational modes
+- **AI agent developers** — add a structured intent layer to your LLM pipeline
+- **Developers done with fragile prompts** — replace brittle regex with governed JSON intents
 
 ---
 
@@ -84,32 +87,6 @@ Add a **JSONFIRST API** credential:
 | `STRICT_PROTOCOL` | Enforces strict JSONFIRST compliance |
 | `EXPRESS_ROUTE` | Fastest possible processing |
 | `GUARDIAN_MODE` | Enhanced safety and content filtering |
-
----
-
-## Example Workflow
-
-```
-[Webhook] → [JSONFIRST: Process Intent] → [Switch on action.normalized] → [HTTP Request / Email / Database]
-```
-
-The JSONFIRST node takes raw text from a webhook and returns a structured JDON:
-
-```json
-{
-  "spec": "JSONFIRST",
-  "version": "2.0",
-  "jdons": [{
-    "jdon_id": "jdon_abc123",
-    "confidence": 0.95,
-    "action": { "raw": "send", "normalized": "send" },
-    "object": { "type": "email", "category": "communication" },
-    "domain": { "primary": "business" }
-  }]
-}
-```
-
-Use n8n's **Switch** or **IF** node to route based on `action.normalized`.
 
 ---
 
